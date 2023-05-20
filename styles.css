@@ -12,12 +12,12 @@ body {
 }
 
 #searchInput {
-    width: 75%;
+    width: 60%;
     padding: 10px;
     font-size: 18px;
 }
 
-#searchButton {
+button {
     padding: 10px;
     font-size: 18px;
 }

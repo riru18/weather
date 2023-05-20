@@ -3,8 +3,17 @@ document.getElementById('searchButton').addEventListener('click', function () {
     getWeather(cityName);
 });
 
-function getWeather(cityName) {
+document.getElementById('showLastSearch').addEventListener('click', function () {
+    var lastSearch = localStorage.getItem('lastSearch');
+    if (lastSearch) {
+        var data = JSON.parse(lastSearch);
+        displayWeather(data);
+    } else {
+        alert('No hay búsquedas recientes guardadas');
+    }
+});
 
+function getWeather(cityName) {
     document.getElementById('weatherContainer').innerHTML = "";
     var apiKey = '4b362f15a49d41359b10deeaf50b0746';
     var url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric&lang=es`;
@@ -13,32 +22,8 @@ function getWeather(cityName) {
         .then(response => response.json())
         .then(data => {
             if (data.weather && data.weather.length > 0) {
-                var iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
-
-                var youtubeVideoId;
-                switch (data.weather[0].main.toLowerCase()) {
-                    case "rain":
-                        youtubeVideoId = "B6eL_N0N5KI";
-                        break;
-                    case "clear":
-                        youtubeVideoId = "hUjUhZ1Yy7Y";
-                        break;
-                    case "clouds":
-                        youtubeVideoId = "WOIZGtgdwdI";
-                        break;
-                    // Añade más casos para otros tipos de clima
-                }
-
-                document.getElementById('weatherContainer').innerHTML = `
-                <h1>Clima en ${data.name}</h1>
-                <img src="${iconUrl}" alt="Weather icon">
-                <p>${data.weather[0].description}</p>
-                <p>Temperatura: ${data.main.temp}°C</p>
-                <p>Humedad: ${data.main.humidity}%</p>
-                <div id="map" class="map" style="width: 100%; height: 400px;"></div>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
-            `;
-                displayMap(data.coord.lat, data.coord.lon);
+                localStorage.setItem('lastSearch', JSON.stringify(data));
+                displayWeather(data);
             } else {
                 document.getElementById('weatherContainer').innerHTML = `
                 <h2>No se pudo obtener el clima para ${cityName}</h2>
@@ -46,6 +31,35 @@ function getWeather(cityName) {
             }
         })
         .catch(error => console.error('Error:', error));
+}
+
+function displayWeather(data) {
+    var iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+
+    var youtubeVideoId;
+    switch (data.weather[0].main.toLowerCase()) {
+        case "rain":
+            youtubeVideoId = "B6eL_N0N5KI";
+            break;
+        case "clear":
+            youtubeVideoId = "hUjUhZ1Yy7Y";
+            break;
+        case "clouds":
+            youtubeVideoId = "WOIZGtgdwdI";
+            break;
+        // Añade más casos para otros tipos de clima
+    }
+
+    document.getElementById('weatherContainer').innerHTML = `
+    <h1>Clima en ${data.name}</h1>
+    <img src="${iconUrl}" alt="Weather icon">
+    <p>${data.weather[0].description}</p>
+    <p>Temperatura: ${data.main.temp}°C</p>
+    <p>Humedad: ${data.main.humidity}%</p>
+    <div id="map" class="map" style="width: 100%; height: 400px;"></div>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
+    `;
+    displayMap(data.coord.lat, data.coord.lon);
 }
 
 function displayMap(lat, lon) {
@@ -62,7 +76,3 @@ function displayMap(lat, lon) {
         })
     });
 }
-
-
-
-
