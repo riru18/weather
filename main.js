@@ -30,13 +30,13 @@ function getWeather(cityName) {
                 }
 
                 document.getElementById('weatherContainer').innerHTML = `
-                <h2>Clima en ${data.name}</h2>
+                <h1>Clima en ${data.name}</h1>
                 <img src="${iconUrl}" alt="Weather icon">
                 <p>${data.weather[0].description}</p>
                 <p>Temperatura: ${data.main.temp}°C</p>
                 <p>Humedad: ${data.main.humidity}%</p>
                 <div id="map" class="map" style="width: 100%; height: 400px;"></div>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeVideoId}" frameborder="0" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
             `;
                 displayMap(data.coord.lat, data.coord.lon);
             } else {
