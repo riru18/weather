@@ -55,7 +55,6 @@ function displayWeather(data) {
         case "clouds":
             youtubeVideoId = "WOIZGtgdwdI";
             break;
-        // Añade más casos para otros tipos de clima
     }
 
     document.getElementById('weatherContainer').innerHTML = `
