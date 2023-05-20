@@ -3,6 +3,14 @@ document.getElementById('searchButton').addEventListener('click', function () {
     getWeather(cityName);
 });
 
+document.getElementById('searchInput').addEventListener('keyup', function (event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById('searchButton').click();
+    }
+});
+
+
 document.getElementById('showLastSearch').addEventListener('click', function () {
     var lastSearch = localStorage.getItem('lastSearch');
     if (lastSearch) {
